@@ -59,10 +59,12 @@ export const logout = catchAsyncErrors(async (req, res, next) => {
 });
 
 
-export const getUser = catchAsyncErrors((req, res, next) => {
-  const user = req.user;
+export const getUser = catchAsyncErrors(async (req, res, next) => {
+  if (!req.user) {
+    return next(new ErrorHandler("Not authenticated", 401));
+  }
   res.status(200).json({
     success: true,
-    user,
+    user: req.user,
   });
 });
