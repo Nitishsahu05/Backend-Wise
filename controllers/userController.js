@@ -46,9 +46,11 @@ export const login = catchAsyncErrors(async (req, res, next) => {
 export const logout = catchAsyncErrors(async (req, res, next) => {
   res
     .status(201)
-    .cookie("token", "", {
-      httpOnly: true,
-      expires: new Date(Date.now()),
+    .cookie("token", token, {
+      httpOnly: true,  // Prevent access from JavaScript (good for security)
+      secure: true,    // Use HTTPS (set to false for local dev)
+      sameSite: "None", // Important for cross-origin requests
+      path: "/",       // Set cookie for the whole site
     })
     .json({
       success: true,
